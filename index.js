@@ -30,7 +30,7 @@ server.get('/beep', function (req, res, next) {
 
 
 if (require.main === module) {
-  server.listen(config.server.port, config.server.addr, function () {
+  server.listen(config.server.port, function () {
     console.log('Server listening on: ' + config.server.addr + ':' + config.server.port);
   });
 }
