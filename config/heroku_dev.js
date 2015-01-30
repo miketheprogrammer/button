@@ -1,6 +1,6 @@
 module.exports = {
   server: {
-    port: 80,
+    port: process.env.PORT,
     addr: "0.0.0.0",
     name: "ButtonApp",
   },
