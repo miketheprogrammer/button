@@ -1,1 +1,1 @@
-webdev: NODE_ENV=heroku_dev node index.js
+web: NODE_ENV=heroku_dev node index.js
