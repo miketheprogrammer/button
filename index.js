@@ -24,9 +24,7 @@ server.use(restify.bodyParser());
 
 // After this, it is buffer incoming, streaming allowed for outgoing.
 
-server.get('/beep', function (req, res, next) {
-  res.send(200, {response: 'boop'});
-})
+require('./routes/index.js')(server);
 
 
 if (require.main === module) {
