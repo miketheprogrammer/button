@@ -1,0 +1,39 @@
+{
+  "name": "button",
+  "version": "1.0.0",
+  "description": "A loyalty rewards transaction system",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=test ./node_modules/mocha/bin/_mocha --recursive tests/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/miketheprogrammer/button.git"
+  },
+  "keywords": [
+    "button",
+    "loyalty",
+    "rewards",
+    "system",
+    "transactions",
+    "users",
+    "leveldb",
+    "levelup",
+    "mutex"
+  ],
+  "author": "Michael Hernandez <michael.hernandez1988@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/miketheprogrammer/button/issues"
+  },
+  "homepage": "https://github.com/miketheprogrammer/button",
+  "dependencies": {
+    "config": "^1.10.0",
+    "level": "^0.18.0",
+    "restify": "^2.8.5"
+  },
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "mocha": "^2.1.0"
+  }
+}
