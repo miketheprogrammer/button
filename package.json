@@ -33,11 +33,18 @@
   "homepage": "https://github.com/miketheprogrammer/button",
   "dependencies": {
     "config": "^1.10.0",
-    "level": "^0.18.0",
-    "restify": "^2.8.5"
+    "level-mutex": "^0.7.0",
+    "leveldown": "^1.0.1",
+    "levelup": "^0.19.0",
+    "memdown": "^1.0.0",
+    "node-uuid": "^1.4.2",
+    "restify": "^2.8.5",
+    "through2": "^0.6.3"
   },
   "devDependencies": {
     "chai": "^1.10.0",
-    "mocha": "^2.1.0"
+    "mocha": "^2.1.0",
+    "through": "^2.3.6",
+    "xtend": "^4.0.0"
   }
 }

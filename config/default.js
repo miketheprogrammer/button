@@ -6,5 +6,9 @@ module.exports = {
   },
   headerDefaults: {
     accept: ['application/json']
+  },
+  database: {
+    // leveldown backend for levelup. //Persistant key,value storage in a log strctured merge tree.
+    backend: 'leveldown'
   }
 }

@@ -6,5 +6,9 @@ module.exports = {
   },
   headerDefaults: {
     accept: ['application/json']
+  },
+  database: {
+    // maintain reproducibility in our tests by using an in memory backend.
+    backend: 'memdown'
   }
 }
