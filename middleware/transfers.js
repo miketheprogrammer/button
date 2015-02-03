@@ -6,7 +6,7 @@ var ensurePointBoundary = exports.ensurePointBoundary = function ensurePointBoun
 
   // we can use req.user, since we will always EnsureUserExists prior to this middleware
   if (req.user === undefined) {
-    return next(new Error('Must always EnsureUserExists prior to EnsurePointBoundary'));
+    return res.send(500, {error: 'Must always EnsureUserExists prior to EnsurePointBoundary', response:null });
   }
 
   if (transfer.operation !== 'deduct') {
@@ -16,7 +16,7 @@ var ensurePointBoundary = exports.ensurePointBoundary = function ensurePointBoun
 
   var test = req.user.points - transfer.value;
   if (test < 0 || test === NaN) {
-    return next(new Error('Illegal Transfer: Operation would bring points below minimum.'));
+    return res.send(403, {error: 'Illegal Transfer: Operation would bring points below minimum.', response: null});
   }
 
   return next();

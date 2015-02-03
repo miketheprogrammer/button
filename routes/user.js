@@ -11,7 +11,7 @@ module.exports = function UserRoutes(server) {
         if (err) {
           return res.send(404, {error: err});
         } else {
-          return res.send(200, {error: null, response: {id: user.email}});
+          return res.send(201, {error: null, response: {id: user.email}});
         }
       });
   });
@@ -39,7 +39,7 @@ module.exports = function UserRoutes(server) {
     req.body.userKey = req.user.email;
     var transfer = new TransferModel(req.body);
     if (['add', 'deduct'].indexOf(transfer.operation) === -1) {
-      return next(new Error('Unsupported Operation: ' + transfer.operation));
+      return res.send(400, {error:'Unsupported Operation: ' + transfer.operation, response: null });
     }
     transfer.put(function(err) {
       if (err) {
@@ -55,7 +55,7 @@ module.exports = function UserRoutes(server) {
         if (err) {
           return res.send(404, {error: err});
         }
-        return res.send(200, {error: null, response: {id: transfer.uuid}});
+        return res.send(201, {error: null, response: {id: transfer.uuid}});
       })
     })
   })

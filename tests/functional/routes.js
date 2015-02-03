@@ -9,8 +9,7 @@ var Transfer      = require('../../models/transfer');
 
 // Creates a JSON client
 var client = restify.createJsonClient({
-  // url: 'http://localhost:3000'
-  url: 'https://mtp-button.herokuapp.com'
+  url: 'http://localhost:3000'
 });
 
 describe('/routes', function () { 
@@ -69,16 +68,18 @@ describe('/routes', function () {
       it('should fail to insert a user a second time', function (done) {
         client.post('/user', user, function(err, req, res, obj) {
           expect(err).to.exist;
-          expect(err).to.have.property('message')
-          expect(JSON.parse(err.message)).to.have.property('message').and.to.equal('User already exists')
+          expect(err).to.have.property('statusCode').and.to.equal(403)
+          expect(obj).to.exist;
+          expect(obj).to.have.property('error').and.to.equal('User already exists');
           done();
         });
       });
       it('should fail when users object does not have email', function (done) {
         client.post('/user', {firstName: user.firstName, lastName: user.lastName}, function(err, req, res, obj) {
           expect(err).to.exist;
-          expect(err).to.have.property('message');
-          expect(JSON.parse(err.message)).to.have.property('message').and.to.equal('Must provide a user id');
+          expect(err).to.have.property('statusCode').and.to.equal(400)
+          expect(obj).to.exist;
+          expect(obj).to.have.property('error').and.to.equal('Must provide a user id');
           done();
         });
       })
@@ -142,13 +143,19 @@ describe('/routes', function () {
       });
       it('should fail for out of bounds', function (done) {
         client.post('/user/'+user.email+'/transfer', transferDeduct, function (err, req, res, obj) {
-          expect(obj.message).to.equal('Illegal Transfer: Operation would bring points below minimum.')
+          expect(err).to.exist;
+          expect(err).to.have.property('statusCode').and.to.equal(403)
+          expect(obj).to.exist;
+          expect(obj).to.have.property('error').and.to.equal('Illegal Transfer: Operation would bring points below minimum.');
           done();
         })
       });
-      it('should post a transfer object to a users list of transfers', function (done) {
+      it('should fail for unsupported operation', function (done) {
         client.post('/user/'+user.email+'/transfer', transferUnsupported, function (err, req, res, obj) {
-          expect(obj.message).to.equal('Unsupported Operation: divide');
+          expect(err).to.exist;
+          expect(err).to.have.property('statusCode').and.to.equal(400)
+          expect(obj).to.exist;
+          expect(obj).to.have.property('error').and.to.equal('Unsupported Operation: divide');
           done();
         })
       });
