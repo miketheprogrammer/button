@@ -83,7 +83,6 @@ BaseModel.prototype.all = function (callback) {
   var results = [];
   db.createReadStream({gte:left, lte:right})
     .on('data', function (data) {
-      console.log(data);
       results.push(data.value);
     })
     .on('error', function (err) {

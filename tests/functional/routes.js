@@ -2,7 +2,6 @@ var restify       = require('restify');
 var assert        = require('assert');
 var expect        = require('chai').expect;
 var db            = require('../../models/base')._db;
-var through2      = require('through2');
 var xtend         = require('xtend');
 var User          = require('../../models/user');
 var Transfer      = require('../../models/transfer');
@@ -17,14 +16,25 @@ describe('/routes', function () {
   var user = {
     email: 'michael.hernandez1988@gmail.com',
     firstName: "Michael",
-    lastName: "Hernandez" 
+    lastName: "Hernandez",
+    points: 0
   };
   var transferAdd = {
     operation: 'add',
     value: 20,
     userKey: user.email
   };
-  describe('/user', function () {
+  var transferDeduct = {
+    operation: 'deduct',
+    value: 20,
+    userKey: user.email
+  };
+  var transferUnsupported = {
+    operation: "divide",
+    value: 20,
+    userKey: user.email
+  };
+  describe('users', function () {
     describe('GET /user/:id', function () {
       before(function (done) {
        (new User(user)).put(done);
@@ -73,8 +83,8 @@ describe('/routes', function () {
       })
     })
   });
-  describe('/transfer', function () {
-    describe('GET /transfer/:id', function () {
+  describe('user transfers', function () {
+    describe('GET /user/:id/transfer', function () {
       var transfer;
       before(function (done) {
        (new User(user)).put(function(err) {
@@ -83,17 +93,64 @@ describe('/routes', function () {
           done(err);
         } else {
           transfer = new Transfer(transferAdd);
-          console.log(transfer);
+          //console.log(transfer);
           transfer.put(done);
         }
        });
       });
+      after(function (done) {
+        db.del((new User(user)).getKey(), function(err) {
+          if (err) {
+            return done(err);
+          }
+          return db.del(transfer.getKey(), done);
+        });
+      });
       it('should get a transfer object by id', function (done) {
         client.get('/user/'+user.email+'/transfers', function (err, req, res, obj) {
-          console.log(err, obj);
-          done();
+          if (obj.error) {
+            return done(obj.error);
+          }
+          expect(Array.isArray(obj.response)).to.equal(true);
+          return done();
         });
       })
+    })
+    describe('POST /user/:id/transfer', function () {
+      beforeEach(function (done) {
+       (new User(user)).put(done);
+      });
+      afterEach(function (done) {
+        db.del((new User(user)).getKey(), done);
+      });
+      it('should post a transfer object to a users list of transfers', function (done) {
+        client.post('/user/'+user.email+'/transfer', transferAdd, function (err, req, res, obj) {
+          // console.log(err, obj);
+          client.get('/user/'+user.email+'/transfers', function (err, req, res, obj) {
+            if (obj.error) {
+              return done(obj.error);
+            }
+            // console.log(obj.response);
+            client.get('/user/'+user.email, function (err, req, res, obj) {
+              // console.log(err, obj);
+              expect(obj.response).to.have.property('points').and.to.equal(20);
+              done();
+            });
+          });
+        })
+      });
+      it('should fail for out of bounds', function (done) {
+        client.post('/user/'+user.email+'/transfer', transferDeduct, function (err, req, res, obj) {
+          expect(obj.message).to.equal('Illegal Transfer: Operation would bring points below minimum.')
+          done();
+        })
+      });
+      it('should post a transfer object to a users list of transfers', function (done) {
+        client.post('/user/'+user.email+'/transfer', transferUnsupported, function (err, req, res, obj) {
+          expect(obj.message).to.equal('Unsupported Operation: divide');
+          done();
+        })
+      });
     })
   })
 })
