@@ -9,7 +9,8 @@ var Transfer      = require('../../models/transfer');
 
 // Creates a JSON client
 var client = restify.createJsonClient({
-  url: 'http://localhost:3000'
+  // url: 'http://localhost:3000'
+  url: 'https://mtp-button.herokuapp.com'
 });
 
 describe('/routes', function () { 

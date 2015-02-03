@@ -1,17 +1,12 @@
-var UserRoutes = require('./user');
-
-module.exports = function (server) {
-  UserRoutes(server);
-}
+//https://mtp-button.herokuapp.com/
 
 var restify       = require('restify');
 var assert        = require('assert');
 var expect        = require('chai').expect;
-var db            = require('../../models/base')._db;
+var db            = require('./models/base')._db;
 var xtend         = require('xtend');
-var User          = require('../../models/user');
-var Transfer      = require('../../models/transfer');
-                    require('../../index').listen(3000);
+var User          = require('./models/user');
+var Transfer      = require('./models/transfer');
 
 // Creates a JSON client
 var client = restify.createJsonClient({
@@ -51,10 +46,9 @@ var transferUnsupported = {
 //     })
 //   })
 // })
-  client.put('/user/'+user.email+'/transfer', transferAdd, function (err, req, res, obj) {
-    console.log(err, obj);
-    client.put('/user/'+user.email+'/transfer', transferAdd, function (err, req, res, obj) {
-      client.put('/user/'+user.email+'/transfer', transferAdd, function (err, req, res, obj) {
+  client.post('/user/'+user.email+'/transfer', transferAdd, function (err, req, res, obj) {
+    client.post('/user/'+user.email+'/transfer', transferAdd, function (err, req, res, obj) {
+      client.post('/user/'+user.email+'/transfer', transferAdd, function (err, req, res, obj) {
 
       })
     })
