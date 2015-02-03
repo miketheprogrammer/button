@@ -71,7 +71,11 @@ First of lets examine the users.
 For a user with email michael.hernandez1988@gmail.com
 
 we make a key
+```bash
+
 users!michael.hernandez1988@gmail.com
+
+```
 
 what is the '!'.
 well it is the earliest human readble ascii unicode character, so this means we can query all users by saying
@@ -86,11 +90,16 @@ lets take a contrived example
 uuid = 'Akdnb2031923'
 
 the key would be
+```bash
 
 users!michael.hernandez1988@gmail.com!transfers!Akdnb2031923
 
+```
+
 What does this mean in the broader scheme. We get insanely fast reads of a full user set of transactions.
 this is how it would look in key order in the database
+
+```bash
 
 users!alex@gmail.com
 users!alex@gmail.com!transactions!abcd1234
@@ -98,6 +107,8 @@ users!alex@gmail.com!transactions!bbcd1234
 users!mhernandez@gmail.com
 users!mhernandez@gmail.com!transactions!cbcd1234
 users!mhernandez@gmail.com!transactions!dbcd1234
+
+```
 
 
 
