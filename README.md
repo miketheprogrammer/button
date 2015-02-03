@@ -20,7 +20,7 @@ Testing the application
 npm test
 ```
 
-Hey its also on heroky
+Hey its also on heroku
 ======
 View some data here
 https://mtp-button.herokuapp.com/user/michael.hernandez1988@gmail.com/transfers
